@@ -1,0 +1,16 @@
+{
+  "name": "message_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "Server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "uuid": "^9.0.1",
+    "ws": "^8.16.0",
+    "zeromq": "^6.0.0-beta.19"
+  }
+}

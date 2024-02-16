@@ -1,0 +1,15 @@
+{
+  "name": "group_server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "DateExp.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "worker-thread": "^1.1.0",
+    "zeromq": "^6.0.0-beta.19"
+  }
+}
