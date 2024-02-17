@@ -24,6 +24,8 @@ async function runMessageServer(){
 
     console.log(`----------------SERVER RUNNING ON PORT ${networkParameter.PORT}----------------`);
 
+    
+
     for await (const [msg] of server) {
         const request = JSON.parse(msg.toString());
 

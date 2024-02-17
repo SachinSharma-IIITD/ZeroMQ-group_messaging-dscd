@@ -2,18 +2,19 @@
 const zeroMQ = require('zeromq');
 const {Worker} = require("worker_threads");
 const { error } = require('console');
+const portfinder = require('portfinder');
 
 // need to pass the server IP address and group IP address while invoking group.js "node group.js 192.168.1.17 192.168.1.30"
 const SERVERIP = process.argv[2];
 const SERVERPORT = 50000;
 
+let PORT = 49000;
+
 
 const IPADDRESS = process.argv[3];
-// group port is fixed at 49000
-const PORT = 49000;
 
 // define the name of the server
-const GROUP_NAME = "Group-1";
+let GROUP_NAME = "Group-1";
 
 // maintaining the group information
 let grpChatMemberInfo = {
@@ -24,7 +25,12 @@ let grpChatMemberInfo = {
 async function runGrpServer()
 {
     const groupServer = new zeroMQ.Request;
-    groupServer.connect(`tcp://${SERVERIP}:${SERVERPORT}`);
+    groupServer.connect(`tcp://${SERVERIP}:${SERVERPORT}`); 
+
+    await portfinder.getPort((err, port) => {
+        PORT = port;
+    });
+    GROUP_NAME = `Group-${PORT}`;
 
     // group server send the message server, the request to register itself.
     const msg = {
@@ -39,6 +45,7 @@ async function runGrpServer()
     groupServer.close();
 
     const grpREQ = new zeroMQ.Reply;
+    
     await grpREQ.bind(`tcp://${IPADDRESS}:${PORT}`);
 
     for await (const [msg] of grpREQ){

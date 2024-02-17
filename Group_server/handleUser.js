@@ -4,27 +4,11 @@ function compareDates(date1, date2) {
     date2 = new Date(date2);
     date1 = new Date(date1);
 
-    if (date1.getFullYear() < date2.getFullYear()) {
-        return true
-    }
-    if (date1.getMonth() < date2.getMonth()) {
+    if (date1 < date2) {
         return true;
     }
-    if (date1.getDate() < date2.getDate()) {
-        return true;
-    }
-    if (date1.getHours() < date2.getHours()) {
-        return true;
-    }
-    if (date1.getMinutes() < date2.getMinutes()) {
-        return true;
-    }
-    if (date1.getSeconds() < date2.getSeconds()) {
-        return true;
-    }
-    return false; 
+    return false;
 }
-
 
 parentPort.on('message',async (params)=>{
     chat = params[0];
@@ -46,10 +30,11 @@ parentPort.on('message',async (params)=>{
             l = mid + 1;
         }
         else {
+            reqIndx = mid;
             h = mid - 1 ;
         }
     }
-    reqIndx = l;
+    // reqIndx = l;
     for (let i = reqIndx;i<chat.length;i++){
         reqChat.push(chat[i]);
     }
