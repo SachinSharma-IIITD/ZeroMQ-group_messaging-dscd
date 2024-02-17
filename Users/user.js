@@ -15,6 +15,8 @@ const PORT = 48000;
 // generating the uuid for the user
 const UUID = uuidv4();
 
+let groupMapping = new Map();
+
 async function run() {
     while(true){
 
@@ -23,6 +25,8 @@ async function run() {
         console.log(`1. Get Groups`);
         // 2 --> Let user join a message group
         console.log(`2. Join Groups`);
+        console.log(`3. Show group information : `);
+        console.log(`4. Access Group`);
         const input = readlineSync.question('Enter your Input :  ');
         console.log("------------------------------------------------------------------------------");
 
@@ -56,13 +60,31 @@ async function run() {
             await groupSocket.send( JSON.stringify({ requestName :  "JOIN REQUEST" ,uuid:UUID, name : UserName}));
             const status = await groupSocket.receive();
             console.log(status.toString());
+            groupMapping.set([grpIP,grpPort], groupSocket);
             console.log("------------------------------------------------------------------------------");
 
-            let groupConsoleInput = 1;
+            
+        }
+        else if (input==3)
+        {
+            console.log("------------------------------------------------------------------------------");
+            console.log("Group Mapping Information");
+            for (let [key, value] of groupMapping){
+                console.log(`IP : ${key[0]}, PORT : ${key[1]}`);
+            }
+            console.log("------------------------------------------------------------------------------");
+        }
+        else if (input==4)
+        {
+            const grpIP = readlineSync.question('Enter Group IPADDRESS to  access : ');
+            const grpPort = readlineSync.question('Enter Group port to access : ');
+            groupSocket = groupMapping.get([grpIP,grpPort]);
+            groupConsoleInput = 0;
             while(groupConsoleInput!=-1){
                 console.log(`1. To Send Message in the Group : `);
                 console.log(`2. To Receive Message from the Group`);
                 console.log(`3. Leave the group`);
+                console.log(`-1 . exit`)
 
                 groupConsoleInput = readlineSync.question("Give your input : ");
                 if (groupConsoleInput == 1){
@@ -104,8 +126,12 @@ async function run() {
                 }
                 else if (groupConsoleInput == 3){
                     await groupSocket.send(JSON.stringify({requestName: "LEAVE REQUEST", uuid : UUID}));
+                    groupMapping.delete([grpIP,grpPort]);   
                     console.log((await groupSocket.receive()).toString());
                     groupConsoleInput = -1;
+                    console.log("------------------------------------------------------------------------------");
+                }
+                else if (groupConsoleInput == -1){
                     console.log("------------------------------------------------------------------------------");
                 }
             }
