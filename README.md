@@ -1,4 +1,5 @@
 # Group Messaging Application using ZeroMQ
+The application consist of a central messaging app server, groups, and users interacting with each other in real-time
 
 ## Dependencies
 - **ZeroMQ**: This is used for messaging between the server and clients.
@@ -48,3 +49,6 @@
 > Replace `<SERVER_IP_ADDRESS>` with the IP address of the server.
 
 *Refer to [Users/user.md](./Users/user.md) for details*
+
+![image](https://github.com/SachinSharma-IIITD/ZeroMQ-group_messaging-dscd/assets/92939004/b9005dae-348e-473e-8b60-6ac5c2b07856)
+
